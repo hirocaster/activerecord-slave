@@ -33,7 +33,14 @@ RSpec.configure do |config|
     configuration = ActiveRecord::Base.configurations["test_master"]
     ActiveRecord::Tasks::DatabaseTasks.drop(configuration)
     ActiveRecord::Tasks::DatabaseTasks.create(configuration)
+
+    configuration = ActiveRecord::Base.configurations["test"]
+    ActiveRecord::Tasks::DatabaseTasks.drop(configuration)
+    ActiveRecord::Tasks::DatabaseTasks.create(configuration)
+
     ActiveRecord::Tasks::DatabaseTasks.load_schema_for configuration, :ruby
+
+    ActiveRecord::Base.establish_connection(:test)
   end
 
   config.after(:each) do
@@ -41,6 +48,9 @@ RSpec.configure do |config|
 
   config.after(:suite) do
     configuration = ActiveRecord::Base.configurations["test_master"]
+    ActiveRecord::Tasks::DatabaseTasks.drop(configuration)
+
+    configuration = ActiveRecord::Base.configurations["test"]
     ActiveRecord::Tasks::DatabaseTasks.drop(configuration)
   end
 

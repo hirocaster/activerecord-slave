@@ -4,13 +4,15 @@ ActiveRecord::Base.configurations = {
   "test_master"    => base.merge("database" => "test_slave", "port" => 21891),
   "test_slave_001" => base.merge("database" => "test_slave", "port" => 21892),
   "test_slave_002" => base.merge("database" => "test_slave", "port" => 21893),
-  "test"           => base.merge("database" => "test")
+  "test"           => base.merge("database" => "test", "port" => 3306, "password" => "")
 }
 
 ActiveRecord::Base.establish_connection(:test)
 
 class User < ActiveRecord::Base
   has_many :items
+
+  use_slave
 end
 
 class Item < ActiveRecord::Base
