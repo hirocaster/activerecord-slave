@@ -1,4 +1,3 @@
-sudo: required
 language: ruby
 install: bundle install --jobs=3 --retry=3
 cache:
@@ -10,10 +9,14 @@ rvm:
   - 2.0.0-p647
 services:
   - mysql
+addons:
+  apt:
+    packages:
+    - libaio-dev
+    - libaio1
 env:
   - DEBIAN_FRONTEND=noninteractive PERL_MM_USE_DEFAULT=1 PERL5LIB=$HOME/perl5/lib/perl5 PATH=$HOME/bin:$HOME/perl5/bin/:$PATH
 before_install:
-  - sudo apt-get --yes install libaio-dev libaio1
   - mkdir ~/bin
   - cd ~/bin
   - curl -O https://github.com/miyagawa/cpanminus/raw/master/cpanm
