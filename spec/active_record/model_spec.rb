@@ -13,6 +13,18 @@ describe ActiveRecord::Slave::Model do
     expect(Item.connection.pool.spec.config[:port]).to eq 3306
   end
 
+  describe "Write to master, Read from slave" do
+    it "returns user object from slave database" do
+      user_from_master = User.create name: "alice"
+
+      user_from_slave  = User.on_slave do
+                           User.find user_from_master.id
+                         end
+
+      expect(user_from_master).to eq user_from_slave
+    end
+  end
+
   describe "Assosiations" do
     let(:user) { User.create name: "alice" }
     let(:item) { Item.create name: "foo", count: 1, user: user }
