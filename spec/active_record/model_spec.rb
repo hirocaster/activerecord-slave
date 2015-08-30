@@ -12,4 +12,19 @@ describe ActiveRecord::Slave::Model do
   it "connect to default" do
     expect(Item.connection.pool.spec.config[:port]).to eq 3306
   end
+
+  describe "Assosiations" do
+    let(:user) { User.create name: "alice" }
+    let(:item) { Item.create name: "foo", count: 1, user: user }
+
+    it "returns user object, belongs_to" do
+      expect(item.user).to be_a User
+      expect(item.user.id).to eq user.id
+    end
+
+    it "Add has_many object" do
+      expect{ item }.to change { user.items.count }.from(0).to(1)
+      expect{ Item.create name: "var", count: 1, user: user }.to change { user.items.count }.from(1).to(2)
+    end
+  end
 end

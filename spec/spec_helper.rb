@@ -34,6 +34,8 @@ RSpec.configure do |config|
     ActiveRecord::Tasks::DatabaseTasks.drop(configuration)
     ActiveRecord::Tasks::DatabaseTasks.create(configuration)
 
+    ActiveRecord::Tasks::DatabaseTasks.load_schema_for configuration, :ruby
+
     configuration = ActiveRecord::Base.configurations["test"]
     ActiveRecord::Tasks::DatabaseTasks.drop(configuration)
     ActiveRecord::Tasks::DatabaseTasks.create(configuration)
