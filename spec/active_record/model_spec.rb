@@ -26,5 +26,12 @@ describe ActiveRecord::Slave::Model do
       expect{ item }.to change { user.items.count }.from(0).to(1)
       expect{ Item.create name: "var", count: 1, user: user }.to change { user.items.count }.from(1).to(2)
     end
+
+    context "Enable DatabaseRewinder, delete records at each after specs" do
+      it "No records in DataBases" do
+        expect(User.all.count).to eq 0
+        expect(Item.all.count).to eq 0
+      end
+    end
   end
 end

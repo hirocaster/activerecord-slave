@@ -14,6 +14,7 @@ end
 
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 require "activerecord-slave"
+require "database_rewinder"
 require "pry"
 require "pry-byebug"
 require "awesome_print"
@@ -36,16 +37,21 @@ RSpec.configure do |config|
 
     ActiveRecord::Tasks::DatabaseTasks.load_schema_for configuration, :ruby
 
+    DatabaseRewinder["test_master"]
+
     configuration = ActiveRecord::Base.configurations["test"]
     ActiveRecord::Tasks::DatabaseTasks.drop(configuration)
     ActiveRecord::Tasks::DatabaseTasks.create(configuration)
 
     ActiveRecord::Tasks::DatabaseTasks.load_schema_for configuration, :ruby
 
+    DatabaseRewinder["test"]
+
     ActiveRecord::Base.establish_connection(:test)
   end
 
   config.after(:each) do
+    DatabaseRewinder.clean
   end
 
   config.after(:suite) do
