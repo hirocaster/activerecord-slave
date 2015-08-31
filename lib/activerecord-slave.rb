@@ -1,5 +1,6 @@
 require "active_record"
 
+require "active_record/slave/replication_config"
 
 module Activerecord
   module Slave
