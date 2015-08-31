@@ -15,7 +15,8 @@ module ActiveRecord
       module SingletonClassMethods
         def connection_with_slave
           if @enable_slave
-            @slave_model.connection
+            model = @slave_model[rand(0..1)]
+            model.connection
           elsif @master_model
             @master_model.connection
           else
@@ -29,17 +30,21 @@ module ActiveRecord
           base_class = self
           @enable_slave = false
 
-          connection_name = :test_slave_002
-          model = Class.new(base_class) do
-                    self.table_name = base_class.table_name
-                    module_eval <<-RUBY, __FILE__, __LINE__ + 1
-                      def self.name
-                        "#{base_class.name}::Slave"
-                      end
-                    RUBY
-                  end
-          model.class_eval { establish_connection(connection_name) }
-          @slave_model = model
+          connection_names = [:test_slave_001, :test_slave_002]
+          models = connection_names.map do |connection_name|
+                     model = Class.new(base_class) do
+                               self.table_name = base_class.table_name
+                               module_eval <<-RUBY, __FILE__, __LINE__ + 1
+                                 def self.name
+                                   "#{base_class.name}::Slave::#{connection_name}"
+                                 end
+                               RUBY
+                             end
+
+                     model.class_eval { establish_connection(connection_name) }
+                     model
+                   end
+          @slave_model = models
 
           connection_name = :test_master
           model = Class.new(base_class) do

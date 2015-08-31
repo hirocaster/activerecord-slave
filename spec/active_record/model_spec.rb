@@ -3,9 +3,12 @@ describe ActiveRecord::Slave::Model do
     expect(User.connection.pool.spec.config[:port]).to eq 21891
   end
 
-  it "connect to slave" do
+  it "connect to slaves" do
     User.on_slave do
-      expect(User.connection.pool.spec.config[:port]).to eq 21893
+      slave_ports = 10.times.map { User.connection.pool.spec.config[:port] }.uniq
+      expect(slave_ports.count).to eq 2
+      expect(slave_ports).to include 21892
+      expect(slave_ports).to include 21893
     end
   end
 
