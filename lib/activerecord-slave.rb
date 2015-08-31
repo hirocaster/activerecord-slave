@@ -2,6 +2,7 @@ require "active_support/lazy_load_hooks"
 
 require "active_record"
 
+require "active_record/slave/version"
 require "active_record/slave/config"
 require "active_record/slave/replication_config"
 
@@ -20,8 +21,6 @@ module ActiveRecord
 end
 
 ActiveSupport.on_load(:active_record) do
-  require "active_record/slave/version"
   require "active_record/slave/model"
-
   ActiveRecord::Base.send(:include, ActiveRecord::Slave::Model)
 end
