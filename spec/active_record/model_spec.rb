@@ -38,8 +38,8 @@ describe ActiveRecord::Slave::Model do
     end
 
     it "Add has_many object" do
-      expect{ item }.to change { user.items.count }.from(0).to(1)
-      expect{ Item.create name: "var", count: 1, user: user }.to change { user.items.count }.from(1).to(2)
+      expect { item }.to change { user.items.count }.from(0).to(1)
+      expect { Item.create name: "var", count: 1, user: user }.to change { user.items.count }.from(1).to(2)
     end
 
     context "Enable DatabaseRewinder, delete records at each after specs" do

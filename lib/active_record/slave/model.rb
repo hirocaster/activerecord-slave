@@ -59,7 +59,7 @@ module ActiveRecord
           @master_model = model
         end
 
-        def on_slave(&block)
+        def on_slave(&_block)
           @enable_slave = true
           result = yield
           @enable_slave = false
