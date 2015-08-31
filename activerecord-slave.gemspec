@@ -5,7 +5,7 @@ require "active_record/slave/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "activerecord-slave"
-  spec.version       = Activerecord::Slave::VERSION
+  spec.version       = ActiveRecord::Slave::VERSION
   spec.authors       = ["hirocaster"]
   spec.email         = ["hohtsuka@gmail.com"]
   spec.summary       = "master/slave for ActiveRecord(MySQL)"
