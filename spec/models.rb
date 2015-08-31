@@ -7,6 +7,15 @@ ActiveRecord::Base.configurations = {
   "test"           => base.merge("database" => "test", "port" => 3306, "password" => "")
 }
 
+ActiveRecord::Slave.configure do |config|
+  config.define_replication(:user) do |replication|
+    replication.register_master(:test_master)
+
+    replication.register_slave(:test_slave_001, 70)
+    replication.register_slave(:test_slave_002, 30)
+  end
+end
+
 ActiveRecord::Base.establish_connection(:test)
 
 class User < ActiveRecord::Base
