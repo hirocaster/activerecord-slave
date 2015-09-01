@@ -5,6 +5,7 @@ require "active_record"
 require "active_record/slave/version"
 require "active_record/slave/config"
 require "active_record/slave/replication_config"
+require "active_record/slave/replication_router"
 
 module ActiveRecord
   module Slave
