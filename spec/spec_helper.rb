@@ -18,6 +18,7 @@ require "database_rewinder"
 require "pry"
 require "pry-byebug"
 require "awesome_print"
+require "rspec/retry"
 
 require_relative "models"
 
@@ -26,6 +27,9 @@ Dir.mkdir log_directry unless Dir.exist? log_directry
 ActiveRecord::Base.logger = Logger.new("#{log_directry}/test.log")
 
 RSpec.configure do |config|
+  config.verbose_retry = true
+  config.display_try_failure_messages = true
+
   config.before(:suite) do
     ActiveRecord::Tasks::DatabaseTasks.db_dir = File.expand_path "..", __FILE__
     ActiveRecord::Tasks::DatabaseTasks.root   = File.expand_path "../..", __FILE__

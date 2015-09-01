@@ -30,10 +30,8 @@ describe ActiveRecord::Slave::ReplicationRouter do
   end
 
   describe "#slave_connection_name" do
-    it "returns slave database conneciton name, by wait lottery confidence 99%" do
+    it "returns slave database conneciton name, by wait lottery confidence 99%", retry: 3  do
       slave_connection_names = 10000.times.map { replication_router.slave_connection_name }
-      expect(slave_connection_names.count(:test_slave_001)).to be_between 7000-60, 7000+60
-      expect(slave_connection_names.count(:test_slave_002)).to be_between 3000-60, 3000+60
       expect(slave_connection_names.count(:test_slave_001)).to be_between 7000 - 60, 7000 + 60
       expect(slave_connection_names.count(:test_slave_002)).to be_between 3000 - 60, 3000 + 60
       expect(slave_connection_names).to include :test_slave_001
