@@ -21,7 +21,7 @@ ActiveRecord::Base.establish_connection(:test)
 class User < ActiveRecord::Base
   has_many :items
 
-  use_slave
+  use_slave :user
 end
 
 class Item < ActiveRecord::Base
