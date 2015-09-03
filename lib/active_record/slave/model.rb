@@ -17,8 +17,6 @@ module ActiveRecord
         def connection_with_slave
           if @slave_mode
             @class_repository.fetch(@replication_router.slave_connection_name).connection
-          elsif @enable_slave
-            @class_repository.fetch(@replication_router.master_connection_name).connection
           else
             connection_without_slave
           end
@@ -37,7 +35,7 @@ module ActiveRecord
           base_class = self
 
           connection_name = replication_config.master_connection_name
-          @class_repository[connection_name] = generate_class(base_class, connection_name)
+          establish_connection(connection_name)
 
           replication_config.slave_connection_names.keys.each do |slave_connection_name|
             @class_repository[slave_connection_name] = generate_class(base_class, slave_connection_name)
@@ -52,7 +50,7 @@ module ActiveRecord
           model = Class.new(base_class) do
             module_eval <<-RUBY, __FILE__, __LINE__ + 1
                     def self.name
-                      "#{base_class.name}::#{connection_name}"
+                      "#{base_class.name}::Slave::#{connection_name}"
                     end
                   RUBY
           end
