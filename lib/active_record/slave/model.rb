@@ -25,9 +25,6 @@ module ActiveRecord
 
       module ClassMethods
         def use_slave(replication_name)
-          @enable_slave = true
-          @slave_mode = false
-
           replication_config     = ActiveRecord::Slave.config.fetch_replication_config replication_name
           @replication_router    = ActiveRecord::Slave::ReplicationRouter.new replication_config
 
