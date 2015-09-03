@@ -46,9 +46,10 @@ module ActiveRecord
 
         def on_slave(&_block)
           @slave_mode = true
-          result = yield
+          _block.call
+        ensure
           @slave_mode = false
-          result
+        end
         end
 
         def generate_class(base_class, connection_name)
