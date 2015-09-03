@@ -7,20 +7,6 @@ module ActiveRecord
 
       included do |model|
         private_class_method :generate_class
-        model.singleton_class.class_eval do
-          include SingletonClassMethods
-          alias_method_chain :connection, :slave
-        end
-      end
-
-      module SingletonClassMethods
-        def connection_with_slave
-          if @slave_mode
-            @class_repository.fetch(@replication_router.slave_connection_name).connection
-          else
-            connection_without_slave
-          end
-        end
       end
 
       module ClassMethods
