@@ -6,6 +6,7 @@ require "active_record/slave/version"
 require "active_record/slave/config"
 require "active_record/slave/replication_config"
 require "active_record/slave/replication_router"
+require "active_record/slave/model"
 
 module ActiveRecord
   module Slave
@@ -19,9 +20,4 @@ module ActiveRecord
       end
     end
   end
-end
-
-ActiveSupport.on_load(:active_record) do
-  require "active_record/slave/model"
-  ActiveRecord::Base.send(:include, ActiveRecord::Slave::Model)
 end
