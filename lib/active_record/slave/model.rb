@@ -11,15 +11,13 @@ module ActiveRecord
 
       module ClassMethods
         def use_slave(replication_name)
-          replication_config     = ActiveRecord::Slave.config.fetch_replication_config replication_name
-          @replication_router    = ActiveRecord::Slave::ReplicationRouter.new replication_config
+          replication_config  = ActiveRecord::Slave.config.fetch_replication_config replication_name
+          @replication_router = ActiveRecord::Slave::ReplicationRouter.new replication_config
+
+          establish_connection replication_config.master_connection_name
 
           @class_repository = {}
           base_class = self
-
-          connection_name = replication_config.master_connection_name
-          establish_connection(connection_name)
-
           replication_config.slave_connection_names.keys.each do |slave_connection_name|
             @class_repository[slave_connection_name] = generate_class(base_class, slave_connection_name)
           end
