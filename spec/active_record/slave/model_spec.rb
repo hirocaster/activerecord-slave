@@ -4,12 +4,10 @@ describe ActiveRecord::Slave::Model do
   end
 
   it "connect to slaves" do
-    User.on_slave do
-      slave_ports = 10.times.map { User.connection.pool.spec.config[:port] }.uniq
-      expect(slave_ports.count).to eq 2
-      expect(slave_ports).to include 21892
-      expect(slave_ports).to include 21893
-    end
+    slave_ports = 10.times.map { User.slave_for.connection.pool.spec.config[:port] }.uniq
+    expect(slave_ports.count).to eq 2
+    expect(slave_ports).to include 21892
+    expect(slave_ports).to include 21893
   end
 
   it "connect to default" do
@@ -20,11 +18,10 @@ describe ActiveRecord::Slave::Model do
     it "returns user object from slave database" do
       user_from_master = User.create name: "alice"
 
-      user_from_slave  = User.on_slave do
-                           User.find user_from_master.id
-                         end
+      user_from_slave  = User.slave_for.find user_from_master.id
 
-      expect(user_from_master).to eq user_from_slave
+      expect(user_from_master.id).to eq user_from_slave.id
+      expect(user_from_master.name).to eq user_from_slave.name
     end
   end
 

@@ -44,12 +44,8 @@ module ActiveRecord
           end
         end
 
-        def on_slave(&_block)
-          @slave_mode = true
-          _block.call
-        ensure
-          @slave_mode = false
-        end
+        def slave_for
+          @class_repository.fetch(@replication_router.slave_connection_name)
         end
 
         def generate_class(base_class, connection_name)
