@@ -5,8 +5,8 @@ module ActiveRecord
     module Model
       extend ActiveSupport::Concern
 
-      included do |model|
-        private_class_method :generate_class
+      included do
+        private_class_method :define_slave_class
       end
 
       module ClassMethods
@@ -16,18 +16,18 @@ module ActiveRecord
 
           establish_connection replication_config.master_connection_name
 
-          @class_repository = {}
+          @slave_class_repository = {}
           base_class = self
-          replication_config.slave_connection_names.keys.each do |slave_connection_name|
-            @class_repository[slave_connection_name] = generate_class(base_class, slave_connection_name)
+          replication_config.slave_connection_names.keys.each do |connection_name|
+            @slave_class_repository[connection_name] = define_slave_class base_class, connection_name
           end
         end
 
         def slave_for
-          @class_repository.fetch(@replication_router.slave_connection_name)
+          @slave_class_repository.fetch @replication_router.slave_connection_name
         end
 
-        def generate_class(base_class, connection_name)
+        def define_slave_class(base_class, connection_name)
           model = Class.new(base_class) do
             module_eval <<-RUBY, __FILE__, __LINE__ + 1
                     def self.name
