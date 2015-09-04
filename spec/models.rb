@@ -20,6 +20,7 @@ ActiveRecord::Base.establish_connection(:test)
 
 class User < ActiveRecord::Base
   has_many :items
+  has_many :skills
 
   include ActiveRecord::Slave::Model
   use_slave :user
@@ -27,4 +28,11 @@ end
 
 class Item < ActiveRecord::Base
   belongs_to :user
+end
+
+class Skill < ActiveRecord::Base
+  belongs_to :user
+
+  include ActiveRecord::Slave::Model
+  use_slave :user
 end

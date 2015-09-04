@@ -28,21 +28,36 @@ describe ActiveRecord::Slave::Model do
   describe "Assosiations" do
     let(:user) { User.create name: "alice" }
     let(:item) { Item.create name: "foo", count: 1, user: user }
+    let(:skill) { Skill.create name: "bar", user: user }
 
     it "returns user object, belongs_to" do
       expect(item.user).to be_a User
       expect(item.user.id).to eq user.id
     end
 
-    it "Add has_many object" do
-      expect { item }.to change { user.items.count }.from(0).to(1)
-      expect { Item.create name: "var", count: 1, user: user }.to change { user.items.count }.from(1).to(2)
+    context "Add has_many object" do
+      it "connect to default database" do
+        expect { item }.to change { user.items.count }.from(0).to(1)
+        expect { Item.create name: "bar", count: 1, user: user }.to change { user.items.count }.from(1).to(2)
+        expect(Item.find(item.id).user).to eq user
+        expect(Item.connection.pool.spec.config[:port]).to eq 3306
+      end
+
+      it "connect to replication databases" do
+        expect { skill }.to change { user.skills.count }.from(0).to(1)
+        expect { Skill.create name: "foobar", user: user }.to change { user.skills.count }.from(1).to(2)
+        expect(Skill.find(skill.id).user).to eq user
+        expect(Skill.slave_for.find(skill.id).user).to eq user
+        expect(Skill.connection.pool.spec.config[:port]).to eq 21891
+        expect(Skill.slave_for.connection.pool.spec.config[:port]).to eq(21892) | eq(21893)
+      end
     end
 
     context "Enable DatabaseRewinder, delete records at each after specs" do
       it "No records in DataBases" do
         expect(User.all.count).to eq 0
         expect(Item.all.count).to eq 0
+        expect(Skill.all.count).to eq 0
       end
     end
   end

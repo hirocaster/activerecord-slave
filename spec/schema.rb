@@ -15,3 +15,12 @@ ActiveRecord::Schema.define(version: 1) do
     t.datetime "updated_at",   null: false
   end
 end
+
+ActiveRecord::Schema.define(version: 2) do
+  create_table "skills", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+end
