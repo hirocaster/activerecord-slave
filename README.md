@@ -1,4 +1,4 @@
-# Activerecord::Slave [![Build Status](https://travis-ci.org/hirocaster/activerecord-slave.svg?branch=master)](https://travis-ci.org/hirocaster/activerecord-slave)
+# Activerecord::Slave [![Build Status](https://travis-ci.org/hirocaster/activerecord-slave.svg?branch=master)](https://travis-ci.org/hirocaster/activerecord-slave) [![Coverage Status](https://coveralls.io/repos/hirocaster/activerecord-slave/badge.svg?branch=master&service=github)](https://coveralls.io/github/hirocaster/activerecord-slave?branch=master)
 
 TODO: Write a gem description
 
