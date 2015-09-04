@@ -15,9 +15,9 @@ module ActiveRecord
         @master_connection_name = connection_name
       end
 
-      def register_slave(connection_name, weigh)
+      def register_slave(connection_name, weight)
         @slave_connection_registory ||= {}
-        @slave_connection_registory.store connection_name, weigh
+        @slave_connection_registory.store connection_name, weight
       end
 
       def slave_connection_names
