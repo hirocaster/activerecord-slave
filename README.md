@@ -1,4 +1,4 @@
-# Activerecord::Slave
+# Activerecord::Slave [![Build Status](https://travis-ci.org/hirocaster/activerecord-slave.svg?branch=master)](https://travis-ci.org/hirocaster/activerecord-slave)
 
 TODO: Write a gem description
 
