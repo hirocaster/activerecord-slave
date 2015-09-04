@@ -1,6 +1,6 @@
 # Activerecord::Slave
 
-[![Build Status](https://travis-ci.org/hirocaster/activerecord-slave.svg?branch=master)](https://travis-ci.org/hirocaster/activerecord-slave) [![Coverage Status](https://coveralls.io/repos/hirocaster/activerecord-slave/badge.svg?branch=master&service=github)](https://coveralls.io/github/hirocaster/activerecord-slave?branch=master) [![Code Climate](https://codeclimate.com/github/hirocaster/activerecord-slave/badges/gpa.svg)](https://codeclimate.com/github/hirocaster/activerecord-slave)
+[![Build Status](https://travis-ci.org/hirocaster/activerecord-slave.svg?branch=master)](https://travis-ci.org/hirocaster/activerecord-slave) [![Coverage Status](https://coveralls.io/repos/hirocaster/activerecord-slave/badge.svg?branch=master&service=github)](https://coveralls.io/github/hirocaster/activerecord-slave?branch=master) [![Code Climate](https://codeclimate.com/github/hirocaster/activerecord-slave/badges/gpa.svg)](https://codeclimate.com/github/hirocaster/activerecord-slave) [![Dependency Status](https://gemnasium.com/hirocaster/activerecord-slave.svg)](https://gemnasium.com/hirocaster/activerecord-slave)
 
 ActiveRecord for MySQL Replication databases(master/slave).
 
