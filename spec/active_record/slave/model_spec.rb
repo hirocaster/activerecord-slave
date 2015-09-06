@@ -27,22 +27,71 @@ describe ActiveRecord::Slave::Model do
 
   describe "Assosiations" do
     let(:user) { User.create name: "alice" }
-    let(:item) { Item.create name: "foo", count: 1, user: user }
 
-    it "returns user object, belongs_to" do
-      expect(item.user).to be_a User
-      expect(item.user.id).to eq user.id
-    end
+    context "has_many object" do
+      context "in default database" do
+        let(:item) { Item.create name: "foo", count: 1, user: user }
 
-    it "Add has_many object" do
-      expect { item }.to change { user.items.count }.from(0).to(1)
-      expect { Item.create name: "var", count: 1, user: user }.to change { user.items.count }.from(1).to(2)
+        it "returns user object, belongs_to" do
+          expect(item.user).to be_a User
+          expect(item.user.id).to eq user.id
+        end
+
+        describe "model connect to default database" do
+          it "returns has_many objects" do
+            expect { item }.to change { user.items.count }.from(0).to(1)
+            expect { Item.create name: "bar", count: 1, user: user }.to change { user.items.count }.from(1).to(2)
+          end
+
+          it "returns replication model object" do
+            expect(Item.find(item.id).user).to eq user
+          end
+
+          it "returns default database service port" do
+            expect(Item.connection.pool.spec.config[:port]).to eq 3306
+          end
+        end
+      end
+
+      context "in replication database" do
+        let(:skill) { Skill.create name: "bar", user: user }
+
+        it "returns user object, belongs_to" do
+          expect(skill.user).to be_a User
+          expect(skill.user.id).to eq user.id
+        end
+
+        describe "model connect to raplication databases" do
+          it "returns has_many objects" do
+            expect { skill }.to change { user.skills.count }.from(0).to(1)
+            expect { Skill.create name: "foobar", user: user }.to change { user.skills.count }.from(1).to(2)
+            expect(user.skills.count).to eq Skill.slave_for.where(user_id: user.id).count
+          end
+
+          it "returns other model object from master" do
+            expect(Skill.find(skill.id).user).to eq user
+          end
+
+          it "returns other model object from slaves" do
+            expect(Skill.slave_for.find(skill.id).user).to eq user
+          end
+
+          it "returns master database service port" do
+            expect(Skill.connection.pool.spec.config[:port]).to eq 21891
+          end
+
+          it "returns slave database service port" do
+            expect(Skill.slave_for.connection.pool.spec.config[:port]).to eq(21892) | eq(21893)
+          end
+        end
+      end
     end
 
     context "Enable DatabaseRewinder, delete records at each after specs" do
       it "No records in DataBases" do
         expect(User.all.count).to eq 0
         expect(Item.all.count).to eq 0
+        expect(Skill.all.count).to eq 0
       end
     end
   end
