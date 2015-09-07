@@ -64,6 +64,13 @@ app/model/user.rb
 
 ```ruby
 class User < ActiveRecord::Base
+  has_many :items
+  include ActiveRecord::Slave::Model
+  use_slave :user # replicaition name
+end
+
+class Item < ActiveRecord::Base
+  belongs_to :user
   include ActiveRecord::Slave::Model
   use_slave :user # replicaition name
 end
@@ -85,6 +92,15 @@ distrebute(load-balance) connection by configured weight settings.
 User.slave_for.all
 User.slave_for.find(1)
 User.slave_for.where(name: "foobar")
+```
+
+Association case. If select from slave, should use #slave_for. Not use assosiaion daynamic methods.
+
+```ruby
+User.find(1).items # items from master database
+
+user = User.find(1)
+Item.slave_for(user_id: user.id) # items from slave databases
 ```
 
 ## Contributing
