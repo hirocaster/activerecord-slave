@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = ActiveRecord::Slave::VERSION
   spec.authors       = ["hirocaster"]
   spec.email         = ["hohtsuka@gmail.com"]
-  spec.summary       = "master/slave for ActiveRecord(MySQL)"
-  spec.description   = "master/slave for ActiveRecord(MySQL)"
+  spec.summary       = "MySQL Replicaition(master/slave) for ActiveRecord"
+  spec.description   = "MySQL Replicaition(master/slave) for ActiveRecord"
   spec.homepage      = "https://github.com/hirocaster/activerecord-slave"
   spec.license       = "MIT"
 
