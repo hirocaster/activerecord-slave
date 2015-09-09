@@ -103,6 +103,26 @@ user = User.find(1)
 Item.slave_for(user_id: user.id) # items from slave databases
 ```
 
+### Migration
+
+You shuld write `#connection` to migration file for replication databases.
+
+```
+class CreateUsers < ActiveRecord::Migration
+  def connection
+    User.connection
+  end
+
+  def change
+    create_table :users do |t|
+      t.string :name
+
+      t.timestamps null: false
+    end
+  end
+end
+```
+
 ## Contributing
 
 1. Fork it ( http://github.com/hirocaster/activerecord-slave/fork )
