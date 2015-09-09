@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["hohtsuka@gmail.com"]
   spec.summary       = "master/slave for ActiveRecord(MySQL)"
   spec.description   = "master/slave for ActiveRecord(MySQL)"
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/hirocaster/activerecord-slave"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
