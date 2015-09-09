@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "coveralls"
   spec.add_development_dependency "database_rewinder"
   spec.add_development_dependency "guard-rspec"
-  spec.add_development_dependency "mysql2"
+  spec.add_development_dependency "mysql2", "~> 0.3.18"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "pry-byebug"
   spec.add_development_dependency "rake"
