@@ -22,6 +22,8 @@ module ActiveRecord
 
       def fetch_replication_config(replication_name)
         ActiveRecord::Slave.config.fetch_replication_config replication_name
+      rescue KeyError
+        raise "Not exist #{replication_name} replicaition."
       end
     end
   end

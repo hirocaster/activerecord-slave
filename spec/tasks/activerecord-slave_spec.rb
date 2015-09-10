@@ -26,6 +26,10 @@ describe "Tasks :active_record:slave" do
       expect(ActiveRecord::Base.connection.execute("SHOW DATABASES").include? database).to be true
     end
 
+    it "return raise, not exist replicaition" do
+      expect { @rake[task].invoke("dummy") }.to raise_error RuntimeError, "Not exist dummy replicaition."
+    end
+
     context "Created replicaition database" do
       describe ".db_drop" do
         let(:task) { "active_record:slave:db_drop" }
@@ -33,6 +37,10 @@ describe "Tasks :active_record:slave" do
         it "Drop replicaition database by task" do
           @rake[task].invoke(replicaition)
           expect(ActiveRecord::Base.connection.execute("SHOW DATABASES").include? database).to be false
+        end
+
+        it "return raise, not exist replicaition" do
+          expect { @rake[task].invoke("dummy") }.to raise_error RuntimeError, "Not exist dummy replicaition."
         end
       end
     end
