@@ -103,6 +103,8 @@ user = User.find(1)
 Item.slave_for(user_id: user.id) # items from slave databases
 ```
 
+### Tasks
+
 ### Migration
 
 You shuld write `#connection` to migration file for replication databases.
