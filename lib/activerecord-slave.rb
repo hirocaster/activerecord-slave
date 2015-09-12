@@ -22,3 +22,5 @@ module ActiveRecord
     end
   end
 end
+
+require "active_record/slave/railtie" if defined? Rails
