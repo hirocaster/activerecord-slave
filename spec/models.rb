@@ -4,7 +4,11 @@ ActiveRecord::Base.configurations = {
   "test_master"    => base.merge("database" => "test_slave", "port" => 21891),
   "test_slave_001" => base.merge("database" => "test_slave", "port" => 21892),
   "test_slave_002" => base.merge("database" => "test_slave", "port" => 21893),
-  "test"           => base.merge("database" => "test", "port" => 3306, "password" => "")
+  "test"           => base.merge("database" => "test", "port" => 3306, "password" => ""),
+
+  "test_task_master" => base.merge("database" => "test_task", "port" => 21891),
+  "test_task_slave_001"   => base.merge("database" => "test_task", "port" => 21892),
+  "test_task_slave_002"   => base.merge("database" => "test_task", "port" => 21893)
 }
 
 ActiveRecord::Slave.configure do |config|
@@ -13,6 +17,13 @@ ActiveRecord::Slave.configure do |config|
 
     replication.register_slave(:test_slave_001, 70)
     replication.register_slave(:test_slave_002, 30)
+  end
+
+  config.define_replication(:task) do |replication|
+    replication.register_master(:test_task_master)
+
+    replication.register_slave(:test_task_slave_001, 1)
+    replication.register_slave(:test_task_slave_002, 1)
   end
 end
 

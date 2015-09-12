@@ -7,6 +7,7 @@ require "active_record/slave/config"
 require "active_record/slave/replication_config"
 require "active_record/slave/replication_router"
 require "active_record/slave/model"
+require "active_record/slave/database_tasks"
 
 module ActiveRecord
   module Slave
@@ -21,3 +22,5 @@ module ActiveRecord
     end
   end
 end
+
+require "active_record/slave/railtie" if defined? Rails
