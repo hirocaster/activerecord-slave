@@ -25,6 +25,24 @@ describe ActiveRecord::Slave::Model do
     end
   end
 
+  describe "multi thread" do
+    before do
+      Parallel.each((0..99).to_a, :in_threads => 8) do |dummy|
+        User.connection_pool.with_connection do
+          User.create name: "test#{dummy}"
+        end
+      end
+    end
+
+    it "returns writed models" do
+      Parallel.each((0..14).to_a, :in_threads => 8) do |dummy|
+        User.slave_for.connection_pool.with_connection do
+          expect(User.slave_for.all.count).to eq 100
+        end
+      end
+    end
+  end
+
   describe "Assosiations" do
     let(:user) { User.create name: "alice" }
 

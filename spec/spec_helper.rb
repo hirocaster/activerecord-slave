@@ -19,6 +19,7 @@ require "pry"
 require "pry-byebug"
 require "awesome_print"
 require "rspec/retry"
+require "parallel"
 
 require_relative "models"
 
