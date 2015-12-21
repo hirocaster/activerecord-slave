@@ -1,13 +1,13 @@
 describe ActiveRecord::Slave::Model do
   it "connect to master" do
-    expect(User.connection.pool.spec.config[:port]).to eq 21891
+    expect(User.connection.pool.spec.config[:port]).to eq 22092
   end
 
   it "connect to slaves", retry: 3 do
     slave_ports = 10.times.map { User.slave_for.connection.pool.spec.config[:port] }.uniq
     expect(slave_ports.count).to eq 2
-    expect(slave_ports).to include 21892
-    expect(slave_ports).to include 21893
+    expect(slave_ports).to include 22093
+    expect(slave_ports).to include 22094
   end
 
   it "connect to default" do
@@ -95,11 +95,11 @@ describe ActiveRecord::Slave::Model do
           end
 
           it "returns master database service port" do
-            expect(Skill.connection.pool.spec.config[:port]).to eq 21891
+            expect(Skill.connection.pool.spec.config[:port]).to eq 22092
           end
 
           it "returns slave database service port" do
-            expect(Skill.slave_for.connection.pool.spec.config[:port]).to eq(21892) | eq(21893)
+            expect(Skill.slave_for.connection.pool.spec.config[:port]).to eq(22093) | eq(22094)
           end
         end
       end
