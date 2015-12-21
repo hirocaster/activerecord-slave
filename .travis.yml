@@ -4,9 +4,9 @@ cache:
   directories:
   - vendor/bundle
 rvm:
-  - 2.2.3
-  - 2.1.7
-  - 2.0.0-p647
+  - 2.2.4
+  - 2.1.8
+  - 2.0.0-p648
 services:
   - mysql
 addons:
