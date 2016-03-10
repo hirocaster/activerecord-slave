@@ -1,14 +1,14 @@
 base = { "adapter" => "mysql2", "encoding" => "utf8", "pool" => 5, "username" => "root", "password" => "msandbox", "host" => "127.0.0.1" }
 
 ActiveRecord::Base.configurations = {
-  "test_master"    => base.merge("database" => "test_slave", "port" => 22092),
-  "test_slave_001" => base.merge("database" => "test_slave", "port" => 22093),
-  "test_slave_002" => base.merge("database" => "test_slave", "port" => 22094),
+  "test_master"    => base.merge("database" => "test_slave", "port" => 2000),
+  "test_slave_001" => base.merge("database" => "test_slave", "port" => 2001),
+  "test_slave_002" => base.merge("database" => "test_slave", "port" => 2002),
   "test"           => base.merge("database" => "test", "port" => 3306, "password" => ""),
 
-  "test_task_master" => base.merge("database" => "test_task", "port" => 22092),
-  "test_task_slave_001"   => base.merge("database" => "test_task", "port" => 22093),
-  "test_task_slave_002"   => base.merge("database" => "test_task", "port" => 22094)
+  "test_task_master" => base.merge("database" => "test_task", "port" => 2000),
+  "test_task_slave_001"   => base.merge("database" => "test_task", "port" => 2001),
+  "test_task_slave_002"   => base.merge("database" => "test_task", "port" => 2002)
 }
 
 ActiveRecord::Slave.configure do |config|
