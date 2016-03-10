@@ -1,13 +1,13 @@
 describe ActiveRecord::Slave::Model do
   it "connect to master" do
-    expect(User.connection.pool.spec.config[:port]).to eq 22092
+    expect(User.connection.pool.spec.config[:port]).to eq 2000
   end
 
   it "connect to slaves", retry: 3 do
     slave_ports = 10.times.map { User.slave_for.connection.pool.spec.config[:port] }.uniq
     expect(slave_ports.count).to eq 2
-    expect(slave_ports).to include 22093
-    expect(slave_ports).to include 22094
+    expect(slave_ports).to include 2001
+    expect(slave_ports).to include 2002
   end
 
   it "connect to default" do
@@ -27,7 +27,7 @@ describe ActiveRecord::Slave::Model do
 
   describe "multi thread" do
     before do
-      Parallel.each((0..99).to_a, :in_threads => 8) do |dummy|
+      Parallel.each((0..99).to_a, :in_threads => 2) do |dummy|
         User.connection_pool.with_connection do
           User.create name: "test#{dummy}"
         end
@@ -35,7 +35,7 @@ describe ActiveRecord::Slave::Model do
     end
 
     it "returns writed models" do
-      Parallel.each((0..14).to_a, :in_threads => 8) do |dummy|
+      Parallel.each((0..14).to_a, :in_threads => 2) do |dummy|
         User.slave_for.connection_pool.with_connection do
           expect(User.slave_for.all.count).to eq 100
         end
@@ -95,11 +95,11 @@ describe ActiveRecord::Slave::Model do
           end
 
           it "returns master database service port" do
-            expect(Skill.connection.pool.spec.config[:port]).to eq 22092
+            expect(Skill.connection.pool.spec.config[:port]).to eq 2000
           end
 
           it "returns slave database service port" do
-            expect(Skill.slave_for.connection.pool.spec.config[:port]).to eq(22093) | eq(22094)
+            expect(Skill.slave_for.connection.pool.spec.config[:port]).to eq(2001) | eq(2002)
           end
         end
       end
