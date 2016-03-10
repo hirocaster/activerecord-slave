@@ -8,6 +8,9 @@ rvm:
   - 2.2.4
   - 2.1.8
   - 2.0.0-p648
+gemfile:
+  - Gemfile
+  - ar50.gemfile
 services:
   - mysql
 addons:
@@ -30,3 +33,9 @@ before_install:
   - gem install bundler -v 1.10.6
 script:
   - bundle exec rake spec
+matrix:
+  exclude:
+    - rvm: 2.1.8
+      gemfile: ar50.gemfile
+    - rvm: 2.0.0-p648
+      gemfile: ar50.gemfile
